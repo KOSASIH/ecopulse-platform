@@ -1,0 +1,6 @@
+{
+	"id": "device2",
+	"name": "EcoPulse Device 2",
+	"location": "Room 202",
+	"sensors": ["air_quality"]
+}
