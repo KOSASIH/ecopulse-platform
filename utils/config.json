@@ -1,0 +1,30 @@
+import json
+import jsonschema
+
+# Load configuration settings from JSON file
+def load_config(file_path):
+    with open(file_path, 'r') as f:
+        config_data = json.load(f)
+
+    # Define JSON schema for validation
+    schema = {
+        "type": "object",
+        "properties": {
+            "api": {"type": "object"},
+            "database": {"type": "object"},
+            "logging": {"type": "object"}
+        },
+        "required": ["api", "database", "logging"]
+    }
+
+    # Validate configuration data against schema
+    try:
+        jsonschema.validate(instance=config_data, schema=schema)
+    except jsonschema.exceptions.ValidationError as e:
+        raise ValueError("Invalid configuration data: {}".format(e))
+
+    return config_data
+
+# Example usage
+config = load_config("config.json")
+print(config)
