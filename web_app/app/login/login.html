@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-ui/4.12.3/css/material-ui.min.css">
+</head>
+<body>
+  <div id="root">
+    <h1>Login</h1>
+    <form>
+      <label>Username:</label>
+      <input type="text" id="username" />
+      <br />
+      <label>Password:</label>
+      <input type="password" id="password" />
+      <br />
+      <button id="login-btn">Login</button>
+    </form>
+    <div id="error-msg"></div>
+  </div>
+  <script>
+    // Handle login form submission
+    document.getElementById("login-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Authenticate using OAuth 2.0 and OpenID Connect
+      fetch("/oauth/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `grant_type=password&username=${username}&password=${password}`
+      })
+     .then(response => response.json())
+     .then(data => {
+        // Login successful, redirect to dashboard
+        window.location.href = "/dashboard";
+      })
+     .catch(error => {
+        // Display error message
+        document.getElementById("error-msg").innerHTML = "Invalid username or password";
+      });
+    });
+  </script>
+</body>
+</html>
