@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Energy Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-ui/4.12.3/css/material-ui.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.4.4/d3.min.js"></script>
+</head>
+<body>
+  <div id="root">
+    <h1>Energy Dashboard</h1>
+    <div>
+      <h2>Energy Forecast</h2>
+      <div id="forecast-chart"></div>
+    </div>
+    <div>
+      <h2>Real-time Energy Data</h2>
+      <div id="realtime-data"></div>
+    </div>
+    <div>
+      <h2>IoT Device Status</h2>
+      <div id="iot-device-status"></div>
+    </div>
+  </div>
+  <script>
+    // Render charts and data using React and D3.js
+    const App = () => {
+      const [forecastData, setForecastData] = React.useState([]);
+      const [realtimeData, setRealtimeData] = React.useState({});
+      const [iotDeviceStatus, setIotDeviceStatus] = React.useState({});
+
+      React.useEffect(() => {
+        fetch("/energy/forecast")
+         .then(response => response.json())
+         .then(data => setForecastData(data.forecast));
+
+        fetch("/energy/realtime")
+         .then(response => response.json())
+         .then(data => setRealtimeData(data.realtime));
+
+        fetch("/iot/devices")
+         .then(response => response.json())
+         .then(data => setIotDeviceStatus(data.devices));
+      }, []);
+
+      return (
+        <div>
+          <h1>Energy Dashboard</h1>
+          <div>
+            <h2>Energy Forecast</h2>
+            <div id="forecast-chart">
+              <svg width="500" height="300"></svg>
+            </div>
+          </div>
+          <div>
+            <h2>Real-time Energy Data</h2>
+            <div id="realtime-data">
+              <p>Current energy usage: {realtimeData.energy_usage} kW</p>
+            </div>
+          </div>
+          <div>
+            <h2>IoT Device Status</h2>
+            <div id="iot-device-status">
+              <ul>
+                {iotDeviceStatus.map(device => (
+                  <li key={device.id}>{device.id}: {device.status}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>
