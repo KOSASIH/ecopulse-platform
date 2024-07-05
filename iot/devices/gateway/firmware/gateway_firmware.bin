@@ -1,0 +1,34 @@
+#include <zephyr/types.h>
+#include <zephyr/kernel.h>
+#include <zephyr/net/mqtt.h>
+#include <zephyr/net/coap.h>
+
+#define MQTT_BROKER_ADDRESS "mqtt://localhost:1883"
+#define COAP_SERVER_ADDRESS "coap://localhost:5683"
+
+int main(void)
+{
+    // Initialize MQTT client
+    mqtt_client_t client;
+    mqtt_client_init(&client, MQTT_BROKER_ADDRESS);
+
+    // Initialize CoAP server
+    coap_server_t server;
+    coap_server_init(&server, COAP_SERVER_ADDRESS);
+
+    // Start MQTT client
+    mqtt_client_start(&client);
+
+    // Start CoAP server
+    coap_server_start(&server);
+
+    while (1) {
+        // Handle MQTT messages
+        mqtt_client_handle_message(&client);
+
+        // Handle CoAP requests
+        coap_server_handle_request(&server);
+    }
+
+    return 0;
+}
