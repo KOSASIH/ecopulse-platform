@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: energy-trading-platform
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: energy-trading-platform
+  template:
+    metadata:
+      labels:
+        app: energy-trading-platform
+    spec:
+      containers:
+      - name: energy-trading-platform
+        image: energy-trading-platform:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ETHEREUM_NODE_URL
+          value: http://ethereum-node:8545
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: energy-trading-platform
+spec:
+  selector:
+    app: energy-trading-platform
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ethereum-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ethereum-node
+  template:
+    metadata:
+      labels:
+        app: ethereum-node
+    spec:
+      containers:
+      - name: ethereum-node
+        image: ethereum/client-go:latest
+        ports:
+        - containerPort: 8545
