@@ -1,0 +1,6 @@
+{
+	"id": "user1",
+	"name": "John Doe",
+	"email": "johndoe@example.com",
+	"devices": ["device1", "device2"]
+}
