@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  energy-trading-platform:
+    build:.
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ethereum-node
+    environment:
+      - ETHEREUM_NODE_URL=http://ethereum-node:8545
+
+  ethereum-node:
+    image: ethereum/client-go:latest
+    ports:
+      - "8545:8545"
