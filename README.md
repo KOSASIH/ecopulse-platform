@@ -51,7 +51,7 @@ The EcoPulse Platform is licensed under the MIT License.
 
 ## Acknowledgments
 
-The EcoPulse Platform was developed by KOSASIH, with contributions from all of contributors.
+The EcoPulse Platform was developed by [KOSASIH](https://www.linkedin.com/in/kosasih-81b46b5a) , with contributions from all of contributors.
 
 ## Contact
 
